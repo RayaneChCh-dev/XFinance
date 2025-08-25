@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const KEYS = {
-  USER: '@carrefour_finance_user',
-  TRANSACTIONS: '@carrefour_finance_transactions'
+  USER: '@x_finance_user',
+  TRANSACTIONS: '@x_finance_transactions'
 };
 
 class StorageService {

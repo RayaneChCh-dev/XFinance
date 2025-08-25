@@ -6,7 +6,7 @@ const mockTransactions = [
     date: new Date(Date.now() - 86400000).toISOString(),
     amount: 50.00,
     category: 'Alimentation',
-    description: 'Courses Carrefour',
+    description: 'Courses x',
     type: 'expense'
   },
   {

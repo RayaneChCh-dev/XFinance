@@ -8,11 +8,11 @@ import {
   Alert,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { 
-  Eye, 
-  EyeOff, 
-  TrendingUp, 
-  TrendingDown, 
+import {
+  Eye,
+  EyeOff,
+  TrendingUp,
+  TrendingDown,
   ArrowUpRight,
   ArrowDownRight,
   Plus
@@ -23,18 +23,35 @@ import TransactionController from '../../controllers/TransactionController';
 import DashboardController from '../../controllers/DashboardController';
 import DashboardChart from '../components/DashboardChart';
 import TransactionCard from '../components/TransactionCard';
+import { formatCurrency } from '../../utils/constants';
 
 export default function HomeScreen({ navigation }) {
   const { user } = useAuth();
-  const [transactions, setTransactions] = useState([]);
   const [showBalance, setShowBalance] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [dashboardData, setDashboardData] = useState({
+    balance: 0,
+    monthlyExpenses: 0,
+    monthlyIncome: 0,
+    recentTransactions: [],
+    chartData: [],
+  });
 
   const loadData = async () => {
     try {
-      const transactionData = await TransactionController.getTransactions();
-      setTransactions(transactionData);
+      // Load user transactions into the controller
+      const loadedUser = await TransactionController.loadUserTransactions();
+      if (loadedUser) {
+        DashboardController.loadUser(loadedUser);
+        setDashboardData({
+          balance: DashboardController.balance,
+          monthlyExpenses: DashboardController.getMonthlyExpenses(),
+          monthlyIncome: DashboardController.getMonthlyIncome(),
+          recentTransactions: DashboardController.getRecentTransactions(),
+          chartData: DashboardController.getChartData(),
+        });
+      }
     } catch (error) {
       Alert.alert('Erreur', 'Impossible de charger les données');
     } finally {
@@ -54,19 +71,6 @@ export default function HomeScreen({ navigation }) {
     loadData();
   };
 
-  const balance = DashboardController.calculateBalance(transactions);
-  const monthlyExpenses = DashboardController.getMonthlyExpenses(transactions);
-  const monthlyIncome = DashboardController.getMonthlyIncome(transactions);
-  const recentTransactions = DashboardController.getRecentTransactions(transactions);
-  const chartData = DashboardController.getChartData(transactions);
-
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('fr-FR', {
-      style: 'currency',
-      currency: 'EUR'
-    }).format(amount);
-  };
-
   if (loading) {
     return (
       <View className="flex-1 justify-center items-center bg-gray-50">
@@ -74,6 +78,8 @@ export default function HomeScreen({ navigation }) {
       </View>
     );
   }
+
+  const { balance, monthlyExpenses, monthlyIncome, recentTransactions, chartData } = dashboardData;
 
   return (
     <ScrollView
@@ -88,21 +94,21 @@ export default function HomeScreen({ navigation }) {
           <View>
             <Text className="text-gray-600 text-sm">Bonjour,</Text>
             <Text className="text-2xl font-bold text-gray-900">
-              {user?.nom || 'Utilisateur'}
+              {user?.name || 'Utilisateur'}
             </Text>
           </View>
-          <TouchableOpacity 
+          <TouchableOpacity
             className="w-12 h-12 bg-gray-100 rounded-full items-center justify-center"
             onPress={() => navigation.navigate('Settings')}
           >
             <Text className="text-xl font-bold text-gray-600">
-              {(user?.nom || 'U').charAt(0).toUpperCase()}
+              {(user?.name || 'U').charAt(0).toUpperCase()}
             </Text>
           </TouchableOpacity>
         </View>
 
         {/* Solde principal */}
-        <View className="bg-gradient-to-r from-primary-500 to-primary-600 rounded-2xl p-6 shadow-lg">
+        <View className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl p-6 shadow-lg">
           <View className="flex-row justify-between items-center mb-2">
             <Text className="text-white/80 text-sm">Solde actuel</Text>
             <TouchableOpacity onPress={() => setShowBalance(!showBalance)}>
@@ -169,11 +175,11 @@ export default function HomeScreen({ navigation }) {
           <Text className="text-gray-900 text-lg font-semibold">
             Transactions récentes
           </Text>
-          <TouchableOpacity 
+          <TouchableOpacity
             onPress={() => navigation.navigate('Transactions')}
             className="flex-row items-center"
           >
-            <Text className="text-primary-500 text-sm mr-1">Voir tout</Text>
+            <Text className="text-blue-500 text-sm mr-1">Voir tout</Text>
             <ArrowUpRight size={16} color="#3b82f6" />
           </TouchableOpacity>
         </View>
@@ -183,8 +189,8 @@ export default function HomeScreen({ navigation }) {
             <Text className="text-gray-500 text-center">
               Aucune transaction récente
             </Text>
-            <TouchableOpacity 
-              className="mt-4 bg-primary-500 px-4 py-2 rounded-xl flex-row items-center"
+            <TouchableOpacity
+              className="mt-4 bg-blue-500 px-4 py-2 rounded-xl flex-row items-center"
               onPress={() => navigation.navigate('AddTransaction')}
             >
               <Plus size={16} color="white" />

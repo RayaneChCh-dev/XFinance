@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
     if (email && password) {
       const mockUser = new User(
         '1',
-        'John Doe',
+        'Pierre Chartier',
         email,
         1500.00
       );

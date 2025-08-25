@@ -4,42 +4,42 @@ const mockTransactions = [
   {
     id: '1',
     date: new Date(Date.now() - 86400000).toISOString(),
-    montant: 50.00,
-    categorie: 'Alimentation',
+    amount: 50.00,
+    category: 'Alimentation',
     description: 'Courses Carrefour',
-    type: 'depense'
+    type: 'expense'
   },
   {
     id: '2',
     date: new Date(Date.now() - 172800000).toISOString(),
-    montant: 2500.00,
-    categorie: 'Salaire',
+    amount: 2500.00,
+    category: 'Salaire',
     description: 'Salaire mensuel',
-    type: 'recette'
+    type: 'income'
   },
   {
     id: '3',
     date: new Date(Date.now() - 259200000).toISOString(),
-    montant: 30.00,
-    categorie: 'Transport',
+    amount: 30.00,
+    category: 'Transport',
     description: 'Essence',
-    type: 'depense'
+    type: 'expense'
   },
   {
     id: '4',
     date: new Date(Date.now() - 345600000).toISOString(),
-    montant: 15.99,
-    categorie: 'Divertissement',
+    amount: 15.99,
+    category: 'Divertissement',
     description: 'Netflix',
-    type: 'depense'
+    type: 'expense'
   },
   {
     id: '5',
     date: new Date(Date.now() - 432000000).toISOString(),
-    montant: 100.00,
-    categorie: 'Shopping',
+    amount: 100.00,
+    category: 'Shopping',
     description: 'Vêtements',
-    type: 'depense'
+    type: 'expense'
   }
 ];
 

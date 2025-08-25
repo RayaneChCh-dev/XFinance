@@ -1,37 +1,48 @@
+import {
+  Transaction
+} from './Transaction';
+
 export class User {
-  constructor(id, nom, email, soldeActuel = 0, historiqueTransactions = []) {
+  constructor(id, name, email, transactionsHistory = []) {
     this.id = id;
-    this.nom = nom;
+    this.name = name;
     this.email = email;
-    this.soldeActuel = soldeActuel;
-    this.historiqueTransactions = historiqueTransactions;
+    this.transactionsHistory = transactionsHistory.map(t => Transaction.fromJSON(t));
   }
 
   static fromJSON(json) {
     return new User(
       json.id,
-      json.nom,
+      json.name,
       json.email,
-      json.soldeActuel,
-      json.historiqueTransactions
+      json.transactionsHistory
     );
   }
 
   toJSON() {
     return {
       id: this.id,
-      nom: this.nom,
+      name: this.name,
       email: this.email,
-      soldeActuel: this.soldeActuel,
-      historiqueTransactions: this.historiqueTransactions
+      transactionsHistory: this.transactionsHistory.map(t => t.toJSON())
     };
   }
 
-  calculerSolde(transactions) {
-    return transactions.reduce((solde, transaction) => {
-      return transaction.type === 'recette' 
-        ? solde + transaction.montant 
-        : solde - transaction.montant;
+  get balance() {
+    return this.transactionsHistory.reduce((balance, transaction) => {
+      return transaction.type === 'income' ?
+        balance + transaction.amount :
+        balance - transaction.amount;
     }, 0);
+  }
+
+  addTransaction(transaction) {
+    this.transactionsHistory.push(transaction);
+  }
+
+  removeTransaction(transactionId) {
+    this.transactionsHistory = this.transactionsHistory.filter(
+      (t) => t.id !== transactionId
+    );
   }
 }

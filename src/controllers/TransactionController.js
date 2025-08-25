@@ -1,27 +1,37 @@
-import { Transaction } from '../models/Transaction';
+import {
+  Transaction
+} from '../models/Transaction';
+import {
+  User
+} from '../models/User';
 import StorageService from '../services/StorageService';
 import ApiService from '../services/ApiService';
 
 class TransactionController {
-  async getTransactions() {
+  constructor() {
+    this.user = null;
+  }
+
+  async loadUserTransactions() {
     try {
-      // Récupère d'abord les transactions locales
       let transactions = await StorageService.getTransactions();
-      
-      // Si pas de transactions locales, récupère les données initiales de l'API mock
+
       if (transactions.length === 0) {
         const initialTransactions = await ApiService.getInitialTransactions();
-        transactions = initialTransactions.map(t => Transaction.fromJSON(t));
-        await StorageService.saveTransactions(transactions.map(t => t.toJSON()));
-      } else {
-        transactions = transactions.map(t => Transaction.fromJSON(t));
+        transactions = initialTransactions.map((t) => Transaction.fromJSON(t));
+        await StorageService.saveTransactions(transactions.map((t) => t.toJSON()));
       }
-      
-      return transactions;
+
+      this.user = new User(1, 'John Doe', 'john.doe@example.com', transactions);
+      return this.user;
     } catch (error) {
-      console.error('Error getting transactions:', error);
-      return [];
+      console.error('Error getting user transactions:', error);
+      return new User(1, 'John Doe', 'john.doe@example.com');
     }
+  }
+
+  get transactions() {
+    return this.user ? this.user.transactionsHistory : [];
   }
 
   async addTransaction(transactionData) {
@@ -29,70 +39,87 @@ class TransactionController {
       const transaction = new Transaction(
         null,
         transactionData.date,
-        transactionData.montant,
-        transactionData.categorie,
+        transactionData.amount,
+        transactionData.category,
         transactionData.description,
         transactionData.type
       );
-
-      await StorageService.addTransaction(transaction.toJSON());
-      return { success: true, transaction };
+      this.user.addTransaction(transaction);
+      await StorageService.saveTransactions(this.user.transactionsHistory.map(t => t.toJSON()));
+      return {
+        success: true,
+        transaction
+      };
     } catch (error) {
       console.error('Error adding transaction:', error);
-      return { success: false, error: error.message };
+      return {
+        success: false,
+        error: error.message
+      };
     }
   }
 
   async deleteTransaction(transactionId) {
     try {
-      await StorageService.removeTransaction(transactionId);
-      return { success: true };
+      this.user.removeTransaction(transactionId);
+      await StorageService.saveTransactions(this.user.transactionsHistory.map(t => t.toJSON()));
+      return {
+        success: true
+      };
     } catch (error) {
       console.error('Error deleting transaction:', error);
-      return { success: false, error: error.message };
+      return {
+        success: false,
+        error: error.message
+      };
     }
   }
 
-  filterTransactions(transactions, filters) {
-    let filtered = [...transactions];
+  filterTransactions(filters) {
+    let filtered = [...this.transactions];
 
     if (filters.search) {
       const searchTerm = filters.search.toLowerCase();
-      filtered = filtered.filter(t => 
+      filtered = filtered.filter(
+        (t) =>
         t.description.toLowerCase().includes(searchTerm) ||
-        t.categorie.toLowerCase().includes(searchTerm)
+        t.category.toLowerCase().includes(searchTerm)
       );
     }
 
     if (filters.category && filters.category !== 'Toutes') {
-      filtered = filtered.filter(t => t.categorie === filters.category);
+      filtered = filtered.filter((t) => t.category === filters.category);
     }
 
     if (filters.type && filters.type !== 'Tous') {
-      filtered = filtered.filter(t => t.type === filters.type);
+      filtered = filtered.filter((t) => t.type === filters.type);
     }
 
     if (filters.dateFrom) {
-      filtered = filtered.filter(t => new Date(t.date) >= new Date(filters.dateFrom));
+      filtered = filtered.filter(
+        (t) => new Date(t.date) >= new Date(filters.dateFrom)
+      );
     }
 
     if (filters.dateTo) {
-      filtered = filtered.filter(t => new Date(t.date) <= new Date(filters.dateTo));
+      filtered = filtered.filter(
+        (t) => new Date(t.date) <= new Date(filters.dateTo)
+      );
     }
 
     return filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
   }
 
-  getTransactionsByCategory(transactions) {
+  getTransactionsByCategory() {
     const categoryTotals = {};
-    
-    transactions
-      .filter(t => t.type === 'depense')
-      .forEach(transaction => {
-        if (!categoryTotals[transaction.categorie]) {
-          categoryTotals[transaction.categorie] = 0;
+
+    this.transactions
+      .filter((t) => t.type === 'expense')
+      .forEach((transaction) => {
+        if (!categoryTotals[transaction.category]) {
+          categoryTotals[transaction.category] = 0;
         }
-        categoryTotals[transaction.categorie] += transaction.montant;
+        categoryTotals[transaction.category] += transaction.amount;
       });
 
     return Object.entries(categoryTotals).map(([category, total]) => ({

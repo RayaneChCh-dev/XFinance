@@ -7,11 +7,13 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
+  Image,
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react-native';
+import logo from '../../../assets/logo.png';
 
 import { useAuth } from '../../context/AuthContext';
 
@@ -38,8 +40,8 @@ export default function LoginScreen() {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      email: 'demo@carrefour.com',
-      password: 'demo123',
+      email: 'pierre@xfinance.app',
+      password: 'pierre123',
     },
   });
 
@@ -66,11 +68,11 @@ export default function LoginScreen() {
         {/* Logo et titre */}
         <View className="items-center mb-12">
           <View className="w-20 h-20 bg-primary-500 rounded-2xl mb-6 items-center justify-center">
-            <Text className="text-white text-2xl font-bold">CF</Text>
+            <Image
+              source={logo}
+              className="w-64 h-64"
+            />
           </View>
-          <Text className="text-3xl font-bold text-gray-900 mb-2">
-            Carrefour Finance
-          </Text>
           <Text className="text-gray-600 text-center">
             Gérez vos finances en toute simplicité
           </Text>
@@ -169,7 +171,7 @@ export default function LoginScreen() {
             🔧 Mode Démonstration
           </Text>
           <Text className="text-blue-600 text-xs text-center">
-            Email: demo@carrefour.com{'\n'}Mot de passe: demo123
+            Email: pierre@xfinance.app{'\n'}Mot de passe: pierre123
           </Text>
         </View>
       </View>

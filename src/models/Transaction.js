@@ -1,19 +1,19 @@
 export class Transaction {
-  constructor(id, date, montant, categorie, description, type = 'depense') {
+  constructor(id, date, amount, category, description, type = 'expense') {
     this.id = id || Date.now().toString();
     this.date = date || new Date().toISOString();
-    this.montant = parseFloat(montant);
-    this.categorie = categorie;
+    this.amount = parseFloat(amount);
+    this.category = category;
     this.description = description;
-    this.type = type; // 'depense' ou 'recette'
+    this.type = type; // 'expense' ou 'income'
   }
 
   static fromJSON(json) {
     return new Transaction(
       json.id,
       json.date,
-      json.montant,
-      json.categorie,
+      json.amount,
+      json.category,
       json.description,
       json.type
     );
@@ -23,8 +23,8 @@ export class Transaction {
     return {
       id: this.id,
       date: this.date,
-      montant: this.montant,
-      categorie: this.categorie,
+      amount: this.amount,
+      category: this.category,
       description: this.description,
       type: this.type
     };

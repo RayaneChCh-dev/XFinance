@@ -5,7 +5,7 @@ const mockTransactions = [
     id: '1',
     date: new Date(Date.now() - 86400000).toISOString(),
     amount: 50.00,
-    category: 'Alimentation',
+    category: 'Food',
     description: 'Courses x',
     type: 'expense'
   },
@@ -13,7 +13,7 @@ const mockTransactions = [
     id: '2',
     date: new Date(Date.now() - 172800000).toISOString(),
     amount: 2500.00,
-    category: 'Salaire',
+    category: 'Salary',
     description: 'Salaire mensuel',
     type: 'income'
   },
@@ -29,7 +29,7 @@ const mockTransactions = [
     id: '4',
     date: new Date(Date.now() - 345600000).toISOString(),
     amount: 15.99,
-    category: 'Divertissement',
+    category: 'Entertainment',
     description: 'Netflix',
     type: 'expense'
   },

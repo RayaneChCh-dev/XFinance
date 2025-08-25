@@ -28,8 +28,8 @@ export default function TransactionsScreen() {
   const [showFilters, setShowFilters] = useState(false);
 
   const [searchText, setSearchText] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('Toutes');
-  const [selectedType, setSelectedType] = useState('Tous');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedType, setSelectedType] = useState('All');
 
   const loadTransactions = async () => {
     try {
@@ -97,8 +97,8 @@ export default function TransactionsScreen() {
 
   const resetFilters = () => {
     setSearchText('');
-    setSelectedCategory('Toutes');
-    setSelectedType('Tous');
+    setSelectedCategory('All');
+    setSelectedType('All');
     setShowFilters(false);
   };
 
@@ -133,7 +133,7 @@ export default function TransactionsScreen() {
             />
             <TextInput
               className="bg-gray-100 rounded-xl pl-10 pr-4 py-3 text-gray-900"
-              placeholder="Rechercher..."
+              placeholder="Search..."
               value={searchText}
               onChangeText={setSearchText}
             />
@@ -148,13 +148,13 @@ export default function TransactionsScreen() {
 
         <View className="flex-row space-x-4">
           <View className="flex-1 bg-green-50 rounded-xl p-3">
-            <Text className="text-green-600 text-sm">Revenus</Text>
+            <Text className="text-green-600 text-sm">Incomes</Text>
             <Text className="text-green-800 font-bold">
               {formatCurrency(totalIncomes)}
             </Text>
           </View>
           <View className="flex-1 bg-red-50 rounded-xl p-3">
-            <Text className="text-red-600 text-sm">Dépenses</Text>
+            <Text className="text-red-600 text-sm">Expenses</Text>
             <Text className="text-red-800 font-bold">
               {formatCurrency(totalExpenses)}
             </Text>
@@ -174,12 +174,12 @@ export default function TransactionsScreen() {
               <Text className="text-gray-500 text-center">
                 Aucune transaction trouvée
               </Text>
-              {(searchText || selectedCategory !== 'Toutes' || selectedType !== 'Tous') && (
+              {(searchText || selectedCategory !== 'All' || selectedType !== 'All') && (
                 <TouchableOpacity
                   className="mt-4 bg-gray-200 px-4 py-2 rounded-xl"
                   onPress={resetFilters}
                 >
-                  <Text className="text-gray-700">Réinitialiser les filtres</Text>
+                  <Text className="text-gray-700">Reset les filters</Text>
                 </TouchableOpacity>
               )}
             </View>
@@ -208,17 +208,17 @@ export default function TransactionsScreen() {
         <View className="flex-1 bg-white">
           <View className="px-6 pt-14 pb-6">
             <View className="flex-row justify-between items-center mb-6">
-              <Text className="text-xl font-bold text-gray-900">Filtres</Text>
+              <Text className="text-xl font-bold text-gray-900">Filters</Text>
               <TouchableOpacity onPress={() => setShowFilters(false)}>
                 <X size={24} color="#6b7280" />
               </TouchableOpacity>
             </View>
 
             <View className="mb-6">
-              <Text className="text-gray-900 font-medium mb-3">Catégorie</Text>
+              <Text className="text-gray-900 font-medium mb-3">Category</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View className="flex-row space-x-2">
-                  {['Toutes', ...CATEGORIES].map((category) => (
+                  {['All', ...CATEGORIES].map((category) => (
                     <TouchableOpacity
                       key={category}
                       className={`px-4 py-2 rounded-xl ${
@@ -246,7 +246,7 @@ export default function TransactionsScreen() {
             <View className="mb-6">
               <Text className="text-gray-900 font-medium mb-3">Type</Text>
               <View className="flex-row space-x-2">
-                {['Tous', 'expense', 'income'].map((type) => (
+                {['All', 'expense', 'income'].map((type) => (
                   <TouchableOpacity
                     key={type}
                     className={`px-4 py-2 rounded-xl ${
@@ -259,8 +259,8 @@ export default function TransactionsScreen() {
                         selectedType === type ? 'text-white' : 'text-gray-700'
                       }`}
                     >
-                      {type === 'Tous' ? 'Tous' :
-                       type === 'expense' ? 'Dépenses' : 'Revenus'}
+                      {type === 'All' ? 'All' :
+                       type === 'expense' ? 'Expenses' : 'Incomes'}
                     </Text>
                   </TouchableOpacity>
                 ))}
@@ -272,13 +272,13 @@ export default function TransactionsScreen() {
                 className="flex-1 bg-gray-200 rounded-xl py-4 items-center"
                 onPress={resetFilters}
               >
-                <Text className="text-gray-700 font-medium">Réinitialiser</Text>
+                <Text className="text-gray-700 font-medium">Reset</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 className="flex-1 bg-blue-500 rounded-xl py-4 items-center"
                 onPress={() => setShowFilters(false)}
               >
-                <Text className="text-white font-medium">Appliquer</Text>
+                <Text className="text-white font-medium">Apply</Text>
               </TouchableOpacity>
             </View>
           </View>

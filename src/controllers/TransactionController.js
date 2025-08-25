@@ -87,11 +87,11 @@ class TransactionController {
       );
     }
 
-    if (filters.category && filters.category !== 'Toutes') {
+    if (filters.category && filters.category !== 'All') {
       filtered = filtered.filter((t) => t.category === filters.category);
     }
 
-    if (filters.type && filters.type !== 'Tous') {
+    if (filters.type && filters.type !== 'All') {
       filtered = filtered.filter((t) => t.type === filters.type);
     }
 

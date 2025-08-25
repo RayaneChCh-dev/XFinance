@@ -47,7 +47,7 @@ function MainTabs() {
       <Tab.Screen 
         name="Home" 
         component={HomeScreen} 
-        options={{ tabBarLabel: 'Accueil' }} 
+        options={{ tabBarLabel: 'Home' }} 
       />
       <Tab.Screen 
         name="Transactions" 
@@ -57,7 +57,7 @@ function MainTabs() {
       <Tab.Screen 
         name="AddTransaction" 
         component={AddTransactionScreen}
-        options={{ tabBarLabel: 'Ajouter' }} 
+        options={{ tabBarLabel: 'Add' }} 
       />
       <Tab.Screen 
         name="Settings" 

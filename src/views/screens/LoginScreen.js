@@ -74,7 +74,7 @@ export default function LoginScreen() {
             />
           </View>
           <Text className="text-gray-600 text-center">
-            Gérez vos finances en toute simplicité
+            Manage your finances with ease
           </Text>
         </View>
 

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User } from '../models/User';
+import { Transaction } from '../models/Transaction';
 import StorageService from '../services/StorageService';
 
 const AuthContext = createContext();
@@ -34,20 +35,26 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (email, password) => {
-    // Mock login - en production, ceci ferait appel à une vraie API
-    if (email && password) {
+    // Mock login - in a real application, this would call an API
+    if (email === 'pierre@xfinance.app' && password === 'pierre123') {
+      const mockTransactions = [
+        new Transaction(null, new Date().toISOString(), 2500, 'Salaire', 'Salaire mensuel', 'income'),
+        new Transaction(null, new Date().toISOString(), 50, 'Alimentation', 'Courses du mois', 'expense'),
+        new Transaction(null, new Date().toISOString(), 30, 'Divertissement', 'Soirée ciné', 'expense'),
+      ];
+
       const mockUser = new User(
         '1',
         'Pierre Chartier',
         email,
-        1500.00
+        mockTransactions.map(t => t.toJSON())
       );
-      
+
       await StorageService.saveUser(mockUser.toJSON());
       setUser(mockUser);
       return { success: true };
     }
-    return { success: false, error: 'Email et mot de passe requis' };
+    return { success: false, error: 'Email ou mot de passe incorrect.' };
   };
 
   const logout = async () => {
@@ -56,9 +63,16 @@ export const AuthProvider = ({ children }) => {
   };
 
   const updateUser = async (userData) => {
-    const updatedUser = { ...user, ...userData };
-    await StorageService.saveUser(updatedUser);
-    setUser(updatedUser);
+    if (user) {
+      const updatedUser = new User(
+        user.id,
+        userData.name || user.name,
+        userData.email || user.email,
+        user.transactionsHistory.map(t => t.toJSON())
+      );
+      await StorageService.saveUser(updatedUser.toJSON());
+      setUser(updatedUser);
+    }
   };
 
   const value = {

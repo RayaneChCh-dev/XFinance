@@ -92,7 +92,7 @@ export default function HomeScreen({ navigation }) {
       <View className="bg-white px-6 pt-14 pb-6">
         <View className="flex-row justify-between items-center mb-6">
           <View>
-            <Text className="text-gray-600 text-sm">Bonjour,</Text>
+            <Text className="text-gray-600 text-sm">Hello,</Text>
             <Text className="text-2xl font-bold text-gray-900">
               {user?.name || 'Utilisateur'}
             </Text>
@@ -110,7 +110,7 @@ export default function HomeScreen({ navigation }) {
         {/* Solde principal */}
         <View className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl p-6 shadow-lg">
           <View className="flex-row justify-between items-center mb-2">
-            <Text className="text-white/80 text-sm">Solde actuel</Text>
+            <Text className="text-white/80 text-sm">Balance</Text>
             <TouchableOpacity onPress={() => setShowBalance(!showBalance)}>
               {showBalance ? (
                 <Eye size={20} color="white" />
@@ -128,29 +128,29 @@ export default function HomeScreen({ navigation }) {
       {/* Stats mensuelles */}
       <View className="px-6 mt-6">
         <Text className="text-gray-900 text-lg font-semibold mb-4">
-          Ce mois-ci
+          This month
         </Text>
         <View className="flex-row space-x-4">
-          {/* Revenus */}
+          {/* Incomes */}
           <View className="flex-1 bg-white rounded-2xl p-4 shadow-sm">
             <View className="flex-row items-center mb-2">
               <View className="w-8 h-8 bg-green-100 rounded-full items-center justify-center mr-3">
                 <ArrowUpRight size={16} color="#10b981" />
               </View>
-              <Text className="text-gray-600 text-sm">Revenus</Text>
+              <Text className="text-gray-600 text-sm">Incomes</Text>
             </View>
             <Text className="text-gray-900 text-lg font-bold">
               {formatCurrency(monthlyIncome)}
             </Text>
           </View>
 
-          {/* Dépenses */}
+          {/* Expenses */}
           <View className="flex-1 bg-white rounded-2xl p-4 shadow-sm">
             <View className="flex-row items-center mb-2">
               <View className="w-8 h-8 bg-red-100 rounded-full items-center justify-center mr-3">
                 <ArrowDownRight size={16} color="#ef4444" />
               </View>
-              <Text className="text-gray-600 text-sm">Dépenses</Text>
+              <Text className="text-gray-600 text-sm">Expenses</Text>
             </View>
             <Text className="text-gray-900 text-lg font-bold">
               {formatCurrency(monthlyExpenses)}
@@ -162,7 +162,7 @@ export default function HomeScreen({ navigation }) {
       {/* Graphique */}
       <View className="px-6 mt-6">
         <Text className="text-gray-900 text-lg font-semibold mb-4">
-          Activité des 7 derniers jours
+          Activity over the last 7 days
         </Text>
         <View className="bg-white rounded-2xl p-4 shadow-sm">
           <DashboardChart data={chartData} />
@@ -195,7 +195,7 @@ export default function HomeScreen({ navigation }) {
             >
               <Plus size={16} color="white" />
               <Text className="text-white ml-2 font-medium">
-                Ajouter une transaction
+                Add a transaction
               </Text>
             </TouchableOpacity>
           </View>

@@ -6,15 +6,15 @@ const SettingsScreen = () => {
   const { user, logout } = useAuth();
 
   const handleLogout = () => {
-    Alert.alert("Déconnexion", "Voulez-vous vraiment vous déconnecter ?", [
+    Alert.alert("Logout", "Voulez-vous vraiment vous déconnecter ?", [
       { text: "Annuler", style: "cancel" },
-      { text: "Déconnexion", onPress: logout },
+      { text: "Logout", onPress: logout },
     ]);
   };
 
   return (
     <View className="flex-1 bg-white p-4">
-      <Text className="text-2xl font-bold mb-6">Paramètres</Text>
+      <Text className="text-2xl font-bold mb-6">Settings</Text>
 
       <View className="mb-4">
         <Text className="text-gray-600">name</Text>
@@ -30,7 +30,7 @@ const SettingsScreen = () => {
         onPress={handleLogout}
         className="bg-red-500 p-3 rounded-2xl mt-8"
       >
-        <Text className="text-white text-center">Se déconnecter</Text>
+        <Text className="text-white text-center">Log out</Text>
       </TouchableOpacity>
     </View>
   );

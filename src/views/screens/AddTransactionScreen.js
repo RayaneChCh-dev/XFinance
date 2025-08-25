@@ -9,8 +9,8 @@ import { useNavigation } from "@react-navigation/native";
 import { CATEGORIES, TRANSACTION_TYPES } from "../../utils/constants";
 
 const schema = yup.object().shape({
-  amount: yup.number().positive("Le montant doit être positif").required("Montant requis"),
-  category: yup.string().required("Catégorie requise"),
+  amount: yup.number().positive("Le Amount doit être positif").required("Amount requis"),
+  category: yup.string().required("Category requise"),
   description: yup.string(),
   type: yup.string().oneOf(Object.values(TRANSACTION_TYPES)).required("Type requis"),
 });
@@ -75,22 +75,22 @@ const AddTransactionScreen = () => {
 
   return (
     <ScrollView className="flex-1 bg-white p-4">
-      <Text className="text-xl font-bold mb-4">Ajouter une transaction</Text>
+      <Text className="text-xl font-bold mb-4">Add a transaction</Text>
 
-      <CustomInput name="amount" label="Montant" control={control} keyboardType="numeric" />
+      <CustomInput name="amount" label="Amount" control={control} keyboardType="numeric" />
 
       <Controller
         control={control}
         name="category"
         render={({ field: { onChange, value } }) => (
           <View className="mb-4">
-            <Text className="mb-2 text-gray-700 font-medium">Catégorie</Text>
+            <Text className="mb-2 text-gray-700 font-medium">Category</Text>
             <TouchableOpacity
               className="bg-gray-100 px-4 py-3 rounded-xl"
               onPress={() => setModalVisible((prev) => ({ ...prev, category: true }))}
             >
               <Text className={value ? "text-gray-900" : "text-gray-400"}>
-                {value || "Sélectionner une catégorie"}
+                {value || "Sélectionner une Category"}
               </Text>
             </TouchableOpacity>
 
@@ -113,7 +113,7 @@ const AddTransactionScreen = () => {
               onPress={() => setModalVisible((prev) => ({ ...prev, type: true }))}
             >
               <Text className={value ? "text-gray-900" : "text-gray-400"}>
-                {value === TRANSACTION_TYPES.expense ? "Dépense" : value === TRANSACTION_TYPES.income ? "Revenu" : "Sélectionner le type"}
+                {value === TRANSACTION_TYPES.expense ? "Expense" : value === TRANSACTION_TYPES.income ? "Income" : "Sélectionner le type"}
               </Text>
             </TouchableOpacity>
 

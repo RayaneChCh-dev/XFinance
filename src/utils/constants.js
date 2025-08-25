@@ -1,13 +1,13 @@
 export const CATEGORIES = [
-  'Alimentation',
+  'Food',
   'Transport',
-  'Divertissement',
+  'entertainment',
   'Shopping',
-  'Santé',
-  'Logement',
-  'Éducation',
-  'Salaire',
-  'Autre'
+  'Health',
+  'Housing',
+  'Education',
+  'Salary',
+  'Other',
 ];
 
 export const TRANSACTION_TYPES = {
